@@ -1,0 +1,13 @@
+{
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "rules": {
+    "no-console": false,
+    "curly": [true, "ignore-same-line"],
+    "interface-name": false,
+    "object-literal-sort-keys": false,
+    "radix": false,
+    "no-unused-variable": {
+      "severity": "warning"
+    }
+  }
+}
