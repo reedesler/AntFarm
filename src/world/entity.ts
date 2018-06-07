@@ -1,7 +1,7 @@
-import {TileDisplay} from "./tile";
+import { TileDisplay } from './tile';
 
 export default abstract class Entity {
-  public render(): TileDisplay{
+  public render(): TileDisplay {
     return {};
   }
 }

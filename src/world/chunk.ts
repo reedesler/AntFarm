@@ -1,5 +1,5 @@
-import {CHUNK_SIZE} from "../util";
-import Generator from "./generator";
+import { CHUNK_SIZE } from '../util';
+import Generator from './generator';
 import Tile from './tile';
 
 export default class Chunk {

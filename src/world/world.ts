@@ -1,10 +1,10 @@
 import * as blessed from 'blessed';
 import { Widgets } from 'blessed';
-import Game from "../game";
-import {CHUNK_SIZE, mod} from "../util";
+import Game from '../game';
+import { CHUNK_SIZE, mod } from '../util';
 import Chunk from './chunk';
-import Generator from "./generator";
-import Tile from "./tile";
+import Generator from './generator';
+import Tile from './tile';
 
 export default class World {
   public box: Widgets.TextElement;
@@ -33,23 +33,24 @@ export default class World {
       width: '100%',
       height: '100%',
       tags: true,
+      bg: 'brightwhite',
     });
   }
 
   public moveCameraUp() {
-    this.cameraY++;
+    this.cameraY += 2;
   }
 
   public moveCameraDown() {
-    this.cameraY--;
+    this.cameraY -= 2;
   }
 
   public moveCameraLeft() {
-    this.cameraX--;
+    this.cameraX -= 2;
   }
 
   public moveCameraRight() {
-    this.cameraX++;
+    this.cameraX += 2;
   }
 
   public render(width: number, height: number) {
@@ -58,12 +59,16 @@ export default class World {
     for (let j = bounds.up; j >= bounds.down; j--) {
       for (let i = bounds.left; i <= bounds.right; i++) {
         const tile = this.getTile(i, j);
+        let background = '{/}';
         let char = ' ';
         if (tile) {
           const tileDisplay = tile.render();
           char = tileDisplay.char || ' ';
+          if (tileDisplay.background) {
+            background = '{' + tileDisplay.background + '-bg}';
+          }
         }
-        str += char;
+        str += background + char;
       }
       str += '\n';
     }

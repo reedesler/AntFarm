@@ -1,4 +1,4 @@
-import {Colour} from "../util";
+import { Colour } from '../util';
 import Entity from './entity';
 
 export default class Tile {
@@ -14,12 +14,22 @@ export default class Tile {
   }
 
   public render(): TileDisplay {
-    if (this.entity) return this.entity.render();
-    else return {};
+    let display: TileDisplay = {};
+    if (this.entity) {
+      display = {
+        background: this.covered ? Colour.WHITE : Colour.DEFAULT,
+        ...this.entity.render(),
+      };
+    }
+    return display;
   }
 
   public setEntity(e: Entity) {
     this.entity = e;
+  }
+
+  public setCovered(covered: boolean) {
+    this.covered = covered;
   }
 }
 
