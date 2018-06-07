@@ -5,6 +5,9 @@
   "author": "Reed <reedesler+github@gmail.com>",
   "license": "GPL-3.0",
   "dependencies": {
+    "@types/blessed": "^0.1.10",
+    "@types/node": "^10.3.0",
+    "blessed": "^0.1.81",
     "nodemon": "^1.17.5",
     "ts-node": "^6.0.5"
   },
@@ -20,10 +23,13 @@
     "start": "yarn tslint && yarn deploy",
     "deploy": "ts-node src/index.ts",
     "watch": "yarn tslint && nodemon",
-    "tslint": "tslint -c tslint.json -p tsconfig.json --fix"
+    "tslint": "tslint -c tslint.json -p tsconfig.json --fix",
+    "pretty": "prettier --single-quote --trailing-comma es5 --print-width 100 --write src/**/*"
   },
   "lint-staged": {
-    "*.{ts}": ["tslint --fix"],
+    "*.{ts}": [
+      "tslint --fix"
+    ],
     "*.{ts,js,json,md}": [
       "prettier --single-quote --trailing-comma es5 --print-width 100 --write",
       "git add"

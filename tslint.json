@@ -8,6 +8,9 @@
     "radix": false,
     "no-unused-variable": {
       "severity": "warning"
+    },
+    "no-empty": {
+      "severity": "warning"
     }
   }
 }
