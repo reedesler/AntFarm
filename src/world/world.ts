@@ -59,7 +59,8 @@ export default class World {
     for (let j = bounds.up; j >= bounds.down; j--) {
       for (let i = bounds.left; i <= bounds.right; i++) {
         const tile = this.getTile(i, j);
-        let background = '{/}';
+        let background = '{default-bg}';
+        let foreground = '{default-fg}';
         let char = ' ';
         if (tile) {
           const tileDisplay = tile.render();
@@ -67,8 +68,11 @@ export default class World {
           if (tileDisplay.background) {
             background = '{' + tileDisplay.background + '-bg}';
           }
+          if (tileDisplay.foreground) {
+            foreground = '{' + tileDisplay.foreground + '-fg}';
+          }
         }
-        str += background + char;
+        str += background + foreground + char;
       }
       str += '\n';
     }
