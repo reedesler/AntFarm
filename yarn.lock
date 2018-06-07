@@ -1450,6 +1450,10 @@ pause-stream@0.0.11:
   dependencies:
     through "~2.3"
 
+perlin-simplex@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/perlin-simplex/-/perlin-simplex-0.0.3.tgz#4c2a6aa52ab93b980daa9e2a95bd4dadf7e9f81c"
+
 pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"

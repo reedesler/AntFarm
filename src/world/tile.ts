@@ -1,12 +1,12 @@
+import {Colour} from "../util";
 import Entity from './entity';
-import { Colour } from './util';
 
 export default class Tile {
+  public x: number;
+  public y: number;
+
   private covered: boolean = false;
   private entity?: Entity;
-
-  private x: number;
-  private y: number;
 
   constructor(x: number, y: number) {
     this.x = x;
@@ -14,13 +14,12 @@ export default class Tile {
   }
 
   public render(): TileDisplay {
-    const display: TileDisplay = {
-      background: Colour.RED,
-    };
-    if ((this.x * this.x + this.y * this.y) < 100) {
-      display.char = '.';
-    }
-    return display;
+    if (this.entity) return this.entity.render();
+    else return {};
+  }
+
+  public setEntity(e: Entity) {
+    this.entity = e;
   }
 }
 

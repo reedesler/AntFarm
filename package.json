@@ -9,6 +9,7 @@
     "@types/node": "^10.3.0",
     "blessed": "^0.1.81",
     "nodemon": "^1.17.5",
+    "perlin-simplex": "^0.0.3",
     "ts-node": "^6.0.5"
   },
   "devDependencies": {

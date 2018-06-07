@@ -1,9 +1,10 @@
 import * as blessed from 'blessed';
 import { Widgets } from 'blessed';
+import Game from "../game";
+import {CHUNK_SIZE, mod} from "../util";
 import Chunk from './chunk';
-import Game from "./game";
+import Generator from "./generator";
 import Tile from "./tile";
-import {CHUNK_SIZE, mod} from "./util";
 
 export default class World {
   public box: Widgets.TextElement;
@@ -14,12 +15,17 @@ export default class World {
 
   private game: Game;
 
+  private generator: Generator;
+
   constructor(game: Game) {
     this.game = game;
-    this.addChunk(0, 0);
-    this.addChunk(-1, 0);
-    this.addChunk(0, -1);
-    this.addChunk(-1, -1);
+    this.generator = new Generator();
+    const WORLD_SIZE = 5;
+    for (let row = -WORLD_SIZE; row <= WORLD_SIZE; row++) {
+      for (let col = -WORLD_SIZE; col <= WORLD_SIZE; col++) {
+        this.addChunk(row, col);
+      }
+    }
     this.cameraX = 0;
     this.cameraY = 0;
 
@@ -68,7 +74,7 @@ export default class World {
     if (!this.chunks[row]) {
       this.chunks[row] = [];
     }
-    this.chunks[row][col] = new Chunk(row, col);
+    this.chunks[row][col] = new Chunk(row, col, this.generator);
   }
 
   private getTile(x: number, y: number): Tile | null {

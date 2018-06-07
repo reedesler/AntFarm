@@ -1,6 +1,6 @@
 import * as blessed from 'blessed';
 import { Widgets } from 'blessed';
-import World from './world';
+import World from "./world/world";
 
 export default class Game {
   public box: Widgets.BoxElement;
