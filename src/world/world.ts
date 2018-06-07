@@ -1,7 +1,7 @@
 import * as blessed from 'blessed';
 import { Widgets } from 'blessed';
 import Game from '../game';
-import { CHUNK_SIZE, mod } from '../util';
+import { CHUNK_SIZE, Colour, mod } from '../util';
 import Chunk from './chunk';
 import Generator from './generator';
 import Tile from './tile';
@@ -56,20 +56,25 @@ export default class World {
   public render(width: number, height: number) {
     const bounds = this.getCameraBounds(width, height);
     let str = '';
+    let prevBackground: Colour = null;
+    let prevForeground: Colour = null;
     for (let j = bounds.up; j >= bounds.down; j--) {
       for (let i = bounds.left; i <= bounds.right; i++) {
         const tile = this.getTile(i, j);
-        let background = '{default-bg}';
-        let foreground = '{default-fg}';
+        let background = '';
+        let foreground = '';
         let char = ' ';
         if (tile) {
           const tileDisplay = tile.render();
           char = tileDisplay.char || ' ';
-          if (tileDisplay.background) {
+          if (!tileDisplay.background) tileDisplay.background = Colour.DEFAULT;
+          if (tileDisplay.background && tileDisplay.background !== prevBackground) {
             background = '{' + tileDisplay.background + '-bg}';
+            prevBackground = tileDisplay.background;
           }
-          if (tileDisplay.foreground) {
+          if (tileDisplay.foreground && tileDisplay.foreground !== prevForeground) {
             foreground = '{' + tileDisplay.foreground + '-fg}';
+            prevForeground = tileDisplay.foreground;
           }
         }
         str += background + foreground + char;

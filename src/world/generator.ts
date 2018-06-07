@@ -18,7 +18,7 @@ export default class Generator {
   private noise(x: number, y: number, frequency: number, octaves: number, persistence: number) {
     let total = 0;
     let amplitude = 1;
-    let maxValue = 0; // Used for normalizing result to 0.0 - 1.0
+    let maxValue = 0;
     for (let i = 0; i < octaves; i++) {
       total += this.simplex.noise(x * frequency, y * frequency) * amplitude;
 
