@@ -20,6 +20,7 @@ renderedGame.on('resize', () => {
 
 screen.append(renderedGame);
 screen.append(game.console);
+screen.append(game.toolbar);
 game.render();
 
 // Quit on Escape, q, or Control-C.

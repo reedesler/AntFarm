@@ -14,6 +14,7 @@ export default class World {
   private chunks: Chunk[][] = [[]];
   private cameraX: number;
   private cameraY: number;
+  private cameraSpeed: number;
 
   private game: Game;
 
@@ -40,6 +41,7 @@ export default class World {
 
     this.cameraX = 0;
     this.cameraY = 0;
+    this.cameraSpeed = 2;
 
     this.box = blessed.text({
       width: '100%',
@@ -50,19 +52,31 @@ export default class World {
   }
 
   public moveCameraUp() {
-    this.cameraY += 2;
+    this.cameraY += this.cameraSpeed;
   }
 
   public moveCameraDown() {
-    this.cameraY -= 2;
+    this.cameraY -= this.cameraSpeed;
   }
 
   public moveCameraLeft() {
-    this.cameraX -= 2;
+    this.cameraX -= this.cameraSpeed;
   }
 
   public moveCameraRight() {
-    this.cameraX += 2;
+    this.cameraX += this.cameraSpeed;
+  }
+
+  public speedCameraUp() {
+    this.cameraSpeed++;
+  }
+
+  public slowCameraDown() {
+    this.cameraSpeed = Math.max(this.cameraSpeed - 1, 1);
+  }
+
+  public getSpeed() {
+    return this.cameraSpeed;
   }
 
   public render(width: number, height: number) {
