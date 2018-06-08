@@ -1,5 +1,5 @@
+import Entity from '../entity';
 import { Colour } from '../util';
-import Entity from './entity';
 import { TileDisplay } from './tile';
 
 export default class Block extends Entity {

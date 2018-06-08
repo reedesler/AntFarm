@@ -1,16 +1,19 @@
 import Block from './block';
 import Tile from './tile';
+import World from './world';
 const Simplex = require('perlin-simplex'); // tslint:disable-line
 
 export default class Generator {
-  private simplex;
-  constructor() {
+  private simplex: any;
+  private world: World;
+  constructor(world: World) {
     this.simplex = new Simplex();
+    this.world = world;
   }
   public generate(tile: Tile) {
     const n = this.noise(tile.x, tile.y, 0.002, 8, 0.7);
     if (n > 0) {
-      tile.setEntity(new Block());
+      tile.setEntity(new Block(this.world));
       tile.setCovered(true);
     }
   }

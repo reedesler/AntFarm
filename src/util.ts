@@ -9,6 +9,6 @@ export enum Colour {
 
 export const CHUNK_SIZE = 64;
 
-export const mod = (n, m) => {
+export const mod = (n: number, m: number) => {
   return ((n % m) + m) % m;
 };

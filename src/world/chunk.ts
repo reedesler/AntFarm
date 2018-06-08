@@ -24,7 +24,11 @@ export default class Chunk {
     this.tiles = arr;
   }
 
-  public get(x: number, y: number) {
+  public getTile(x: number, y: number) {
     return this.tiles[y][x];
+  }
+
+  public setTile(x: number, y: number, tile: Tile) {
+    this.tiles[y][x] = tile;
   }
 }

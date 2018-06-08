@@ -1,12 +1,12 @@
+import Entity from '../entity';
 import { Colour } from '../util';
-import Entity from './entity';
 
 export default class Tile {
   public x: number;
   public y: number;
 
   private covered: boolean = false;
-  private entity?: Entity;
+  private entity?: Entity | null;
 
   constructor(x: number, y: number) {
     this.x = x;
@@ -24,8 +24,13 @@ export default class Tile {
     return display;
   }
 
-  public setEntity(e: Entity) {
+  public setEntity(e: Entity | null) {
     this.entity = e;
+    if (this.entity) this.entity.tile = this;
+  }
+
+  public getEntity() {
+    return this.entity;
   }
 
   public setCovered(covered: boolean) {
