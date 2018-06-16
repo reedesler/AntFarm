@@ -1,6 +1,7 @@
 import * as blessed from 'blessed';
 import { Widgets } from 'blessed';
 import Ant from '../ant';
+import Entity from '../entity';
 import Food from '../food';
 import Game from '../game';
 import LiveEntity from '../liveEntity';
@@ -16,12 +17,15 @@ export default class World {
   private cameraX: number;
   private cameraY: number;
   private cameraSpeed: number;
+  private followingEntity: Entity | null;
+  private followingIndex = -1;
 
   private game: Game;
 
   private generator: Generator;
 
   private liveEntities: LiveEntity[] = [];
+  private ants: Ant[] = [];
 
   constructor(game: Game) {
     this.game = game;
@@ -53,19 +57,19 @@ export default class World {
   }
 
   public moveCameraUp() {
-    this.cameraY += this.cameraSpeed;
+    if (!this.followingEntity) this.cameraY += this.cameraSpeed;
   }
 
   public moveCameraDown() {
-    this.cameraY -= this.cameraSpeed;
+    if (!this.followingEntity) this.cameraY -= this.cameraSpeed;
   }
 
   public moveCameraLeft() {
-    this.cameraX -= this.cameraSpeed;
+    if (!this.followingEntity) this.cameraX -= this.cameraSpeed;
   }
 
   public moveCameraRight() {
-    this.cameraX += this.cameraSpeed;
+    if (!this.followingEntity) this.cameraX += this.cameraSpeed;
   }
 
   public speedCameraUp() {
@@ -85,13 +89,20 @@ export default class World {
     let str = '';
     let prevBackground: Colour | null = null;
     let prevForeground: Colour | null = null;
-    for (let j = bounds.up; j >= bounds.down; j--) {
-      for (let i = bounds.left; i <= bounds.right; i++) {
-        const tile = this.getTile(i, j);
+    for (let y = bounds.up; y >= bounds.down; y--) {
+      for (let x = bounds.left; x <= bounds.right; x++) {
+        const tile = this.getTile(x, y);
         let background = '';
         let foreground = '';
         let char = ' ';
-        const tileDisplay = (tile && tile.render()) || {};
+        let tileDisplay = (tile && tile.render()) || {};
+        if (this.followingEntity) {
+          const followingEntityDisplay = this.followingEntity.followingDisplay(
+            x - this.followingEntity.x,
+            y - this.followingEntity.y
+          );
+          tileDisplay = { ...tileDisplay, ...followingEntityDisplay };
+        }
         if (tileDisplay && tileDisplay.char) char = tileDisplay.char;
         if (!tileDisplay.background) tileDisplay.background = Colour.DEFAULT;
         if (tileDisplay.background && tileDisplay.background !== prevBackground) {
@@ -118,6 +129,11 @@ export default class World {
     for (const liveEntity of this.liveEntities) {
       liveEntity.tick();
     }
+
+    if (this.followingEntity) {
+      this.cameraX = this.followingEntity.x;
+      this.cameraY = this.followingEntity.y;
+    }
   }
 
   public addLiveEntity(liveEntity: LiveEntity) {
@@ -128,6 +144,17 @@ export default class World {
     const index = this.liveEntities.indexOf(liveEntity);
     if (index > -1) {
       this.liveEntities.splice(index, 1);
+    }
+  }
+
+  public addAnt(ant: Ant) {
+    this.ants.push(ant);
+  }
+
+  public removeAnt(ant: Ant) {
+    const index = this.ants.indexOf(ant);
+    if (index > -1) {
+      this.ants.splice(index, 1);
     }
   }
 
@@ -155,6 +182,16 @@ export default class World {
         }
       }
     }
+  }
+
+  public followNext() {
+    this.followingIndex = (this.followingIndex + 1) % this.ants.length;
+    this.followingEntity = this.ants[this.followingIndex];
+  }
+
+  public clearFollow() {
+    this.followingIndex = -1;
+    this.followingEntity = null;
   }
 
   public log(s: string) {

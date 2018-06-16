@@ -9,7 +9,19 @@ export default abstract class Entity {
     this.world = world;
   }
 
+  get x() {
+    return this.tile.x;
+  }
+
+  get y() {
+    return this.tile.y;
+  }
+
   public render(): TileDisplay {
+    return {};
+  }
+
+  public followingDisplay(x: number, y: number): TileDisplay {
     return {};
   }
 

@@ -83,6 +83,14 @@ export default class Game {
       this.startTick();
     });
 
+    this.box.key('f', () => {
+      this.world.followNext();
+    });
+
+    this.box.key('escape', () => {
+      this.world.clearFollow();
+    });
+
     this.console = blessed.box({
       bg: 'black',
       fg: 'white',
