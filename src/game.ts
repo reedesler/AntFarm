@@ -16,7 +16,7 @@ export default class Game {
   private loopId: number = -1;
 
   private GAME_SPEEDS = [2000, 1000, 1000 / 5, 1000 / 15, 1000 / 30, 1000 / 60, 0];
-  private gameSpeedIndex = 5;
+  private gameSpeedIndex = 3;
 
   constructor(screen: Widgets.Screen) {
     this.screen = screen;

@@ -6,7 +6,7 @@ export default class Tile {
   public y: number;
 
   private covered: boolean = false;
-  private entity?: Entity | null;
+  private entity: Entity | null;
 
   constructor(x: number, y: number) {
     this.x = x;
@@ -14,10 +14,12 @@ export default class Tile {
   }
 
   public render(): TileDisplay {
-    let display: TileDisplay = {};
+    let display: TileDisplay = {
+      background: this.covered ? Colour.WHITE : Colour.DEFAULT,
+    };
     if (this.entity) {
       display = {
-        background: this.covered ? Colour.WHITE : Colour.DEFAULT,
+        ...display,
         ...this.entity.render(),
       };
     }
@@ -32,6 +34,10 @@ export default class Tile {
 
   public getEntity() {
     return this.entity;
+  }
+
+  public getCovered() {
+    return this.covered;
   }
 
   public setCovered(covered: boolean) {

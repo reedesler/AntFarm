@@ -2,7 +2,7 @@ import { default as Tile, TileDisplay } from './world/tile';
 import World from './world/world';
 
 export default abstract class Entity {
-  public tile: Tile;
+  public tile: Tile | null;
   protected world: World;
 
   constructor(world: World) {
@@ -10,11 +10,17 @@ export default abstract class Entity {
   }
 
   get x() {
-    return this.tile.x;
+    if (this.tile) {
+      return this.tile.x;
+    }
+    return null;
   }
 
   get y() {
-    return this.tile.y;
+    if (this.tile) {
+      return this.tile.y;
+    }
+    return null;
   }
 
   public render(): TileDisplay {
@@ -26,7 +32,7 @@ export default abstract class Entity {
   }
 
   public destroy() {
-    this.tile.setEntity(null);
+    if (this.tile) this.tile.setEntity(null);
   }
 
   public isOpaque() {
@@ -34,7 +40,7 @@ export default abstract class Entity {
   }
 
   protected move(x: number, y: number) {
-    if (Math.abs(x) > 1 || Math.abs(y) > 1) return;
+    if (Math.abs(x) > 1 || Math.abs(y) > 1 || !this.tile) return;
     const destTile = this.world.getTile(this.tile.x + x, this.tile.y + y);
     if (destTile && !destTile.getEntity()) {
       this.tile.setEntity(null);

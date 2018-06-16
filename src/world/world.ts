@@ -17,7 +17,7 @@ export default class World {
   private cameraX: number;
   private cameraY: number;
   private cameraSpeed: number;
-  private followingEntity: Entity | null;
+  public followingEntity: Entity | null;
   private followingIndex = -1;
 
   private game: Game;
@@ -40,7 +40,7 @@ export default class World {
     const ANTZ = 5;
     for (let row = 0; row <= ANTZ; row++) {
       for (let col = 0; col <= ANTZ; col++) {
-        this.chunks[0][0].getTile(col, row).setEntity(new Ant(this));
+        this.chunks[0][0].getTile(col * 5 + col, row * 5 + row).setEntity(new Ant(this));
       }
     }
 
@@ -96,10 +96,10 @@ export default class World {
         let foreground = '';
         let char = ' ';
         let tileDisplay = (tile && tile.render()) || {};
-        if (this.followingEntity) {
+        if (this.followingEntity && this.followingEntity.tile) {
           const followingEntityDisplay = this.followingEntity.followingDisplay(
-            x - this.followingEntity.x,
-            y - this.followingEntity.y
+            x - this.followingEntity.x!,
+            y - this.followingEntity.y!
           );
           tileDisplay = { ...tileDisplay, ...followingEntityDisplay };
         }
@@ -130,9 +130,9 @@ export default class World {
       liveEntity.tick();
     }
 
-    if (this.followingEntity) {
-      this.cameraX = this.followingEntity.x;
-      this.cameraY = this.followingEntity.y;
+    if (this.followingEntity && this.followingEntity.tile) {
+      this.cameraX = this.followingEntity.x!;
+      this.cameraY = this.followingEntity.y!;
     }
   }
 
