@@ -9,4 +9,8 @@ export default class Block extends Entity {
       foreground: Colour.BLACK,
     };
   }
+
+  public isOpaque() {
+    return true;
+  }
 }

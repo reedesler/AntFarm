@@ -37,6 +37,10 @@ export default class Tile {
   public setCovered(covered: boolean) {
     this.covered = covered;
   }
+
+  public isOpaque() {
+    return !!this.entity && this.entity.isOpaque();
+  }
 }
 
 export interface TileDisplay {

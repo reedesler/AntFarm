@@ -29,6 +29,10 @@ export default abstract class Entity {
     this.tile.setEntity(null);
   }
 
+  public isOpaque() {
+    return false;
+  }
+
   protected move(x: number, y: number) {
     if (Math.abs(x) > 1 || Math.abs(y) > 1) return;
     const destTile = this.world.getTile(this.tile.x + x, this.tile.y + y);

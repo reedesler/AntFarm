@@ -11,6 +11,9 @@
     },
     "no-empty": {
       "severity": "warning"
+    },
+    "member-ordering": {
+      "severity": "warning"
     }
   }
 }

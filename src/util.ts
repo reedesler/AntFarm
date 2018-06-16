@@ -4,6 +4,8 @@ export enum Colour {
   GREEN = 'green',
   WHITE = 'white',
   BLACK = 'black',
+  YELLOW = 'yellow',
+  BRIGHTYELLOW = 'brightyellow',
   BRIGHTBLACK = 'brightblack',
   BRIGHTWHITE = 'brightwhite',
   DEFAULT = 'default',
