@@ -15,6 +15,9 @@ export default class Game {
 
   private loopId: number = -1;
 
+  private GAME_SPEEDS = [2000, 1000, 1000 / 5, 1000 / 15, 1000 / 30, 1000 / 60, 0];
+  private gameSpeedIndex = 5;
+
   constructor(screen: Widgets.Screen) {
     this.screen = screen;
     this.world = new World(this);
@@ -68,6 +71,18 @@ export default class Game {
       }
     });
 
+    this.box.key('m', () => {
+      this.gameSpeedIndex = Math.min(this.gameSpeedIndex + 1, this.GAME_SPEEDS.length - 1);
+      gameloop.clearGameLoop(this.loopId);
+      this.startTick();
+    });
+
+    this.box.key('n', () => {
+      this.gameSpeedIndex = Math.max(this.gameSpeedIndex - 1, 0);
+      gameloop.clearGameLoop(this.loopId);
+      this.startTick();
+    });
+
     this.console = blessed.box({
       bg: 'black',
       fg: 'white',
@@ -97,13 +112,15 @@ export default class Game {
   }
 
   public render() {
-    this.toolbar.content = 'Camera Speed: ' + this.world.getSpeed();
+    const fps = 1000 / this.GAME_SPEEDS[this.gameSpeedIndex];
+    this.toolbar.content =
+      'Camera Speed: ' + this.world.getSpeed() + '     Game speed: ' + fps.toFixed(1) + ' FPS';
     this.world.render(Number(this.box.width), Number(this.box.height));
     this.screen.render();
   }
 
   public startTick(): number {
-    this.loopId = gameloop.setGameLoop(this.tick, 1000 / 60);
+    this.loopId = gameloop.setGameLoop(this.tick, this.GAME_SPEEDS[this.gameSpeedIndex]);
     return this.loopId;
   }
 

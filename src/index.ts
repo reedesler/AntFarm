@@ -24,7 +24,7 @@ screen.append(game.toolbar);
 game.render();
 
 // Quit on Escape, q, or Control-C.
-screen.key(['escape', 'q', 'C-c'], (ch, key) => {
+screen.key(['q', 'C-c'], (ch, key) => {
   return process.exit(0);
 });
 
