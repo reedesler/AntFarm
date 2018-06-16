@@ -1,18 +1,23 @@
 import LiveEntity from './liveEntity';
-import { Colour } from './util';
+import { Colour, getRandomInt } from './util';
 
 export default class Ant extends LiveEntity {
+  private dead = false;
   public render() {
     return {
       char: '•',
-      foreground: Colour.RED,
+      foreground: this.dead ? Colour.BLACK : Colour.RED,
     };
   }
 
   public tick() {
-    function getRandomInt(min: number, max: number) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    if (this.dead) return;
     this.move(getRandomInt(-1, 1), getRandomInt(-1, 1));
+    if (Math.random() < 0.001) {
+      this.dead = true;
+    }
+    if (Math.random() < 0.0001) {
+      this.destroy();
+    }
   }
 }

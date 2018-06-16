@@ -1,11 +1,19 @@
-import { CHUNK_SIZE } from '../util';
+import { CHUNK_SIZE, getRandomInt } from '../util';
 import Generator from './generator';
 import Tile from './tile';
+import World from './world';
 
 export default class Chunk {
   private tiles: Tile[][];
+  private world: World;
+  private col: number;
+  private row: number;
 
-  constructor(row: number, col: number, generator: Generator) {
+  constructor(row: number, col: number, generator: Generator, world: World) {
+    this.world = world;
+    this.col = col;
+    this.row = row;
+
     const xOffset = col * CHUNK_SIZE;
     const yOffset = row * CHUNK_SIZE;
     const arr: Tile[][] = [];
@@ -30,5 +38,22 @@ export default class Chunk {
 
   public setTile(x: number, y: number, tile: Tile) {
     this.tiles[y][x] = tile;
+  }
+
+  public tick(): any {
+    if (Math.random() < 0.001) {
+      const { x, y } = this.globalCoords(
+        getRandomInt(0, CHUNK_SIZE - 1),
+        getRandomInt(0, CHUNK_SIZE - 1)
+      );
+      this.world.spawnFood(x, y);
+    }
+  }
+
+  private globalCoords(x: number, y: number) {
+    return {
+      x: x + this.col * CHUNK_SIZE,
+      y: y + this.row * CHUNK_SIZE,
+    };
   }
 }

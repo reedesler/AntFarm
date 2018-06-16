@@ -25,6 +25,7 @@ export default class Tile {
   }
 
   public setEntity(e: Entity | null) {
+    if (e && this.entity) this.entity.destroy();
     this.entity = e;
     if (this.entity) this.entity.tile = this;
   }

@@ -1,6 +1,7 @@
 import * as blessed from 'blessed';
 import { Widgets } from 'blessed';
 import Ant from '../ant';
+import Food from '../food';
 import Game from '../game';
 import LiveEntity from '../liveEntity';
 import { CHUNK_SIZE, Colour, mod } from '../util';
@@ -109,29 +110,69 @@ export default class World {
   }
 
   public tick() {
+    for (const row of Object.values(this.chunks)) {
+      for (const chunk of Object.values(row)) {
+        chunk.tick();
+      }
+    }
     for (const liveEntity of this.liveEntities) {
       liveEntity.tick();
     }
   }
 
-  public addLiveEntitiy(liveEntity: LiveEntity) {
+  public addLiveEntity(liveEntity: LiveEntity) {
     this.liveEntities.push(liveEntity);
   }
 
+  public removeLiveEntity(liveEntity: LiveEntity) {
+    const index = this.liveEntities.indexOf(liveEntity);
+    if (index > -1) {
+      this.liveEntities.splice(index, 1);
+    }
+  }
+
   public getTile(x: number, y: number): Tile | null {
+    const xOffset = mod(x, CHUNK_SIZE);
+    const yOffset = mod(y, CHUNK_SIZE);
+    const chunk = this.getChunkFromTile(x, y);
+    return chunk && chunk.getTile(xOffset, yOffset);
+  }
+
+  public setTile(x: number, y: number, tile: Tile) {
+    const xOffset = mod(x, CHUNK_SIZE);
+    const yOffset = mod(y, CHUNK_SIZE);
+    const chunk = this.getChunkFromTile(x, y);
+    return chunk && chunk.setTile(xOffset, yOffset, tile);
+  }
+
+  public spawnFood(x: number, y: number) {
+    const SIZE = 3;
+    for (let row = y - SIZE; row <= y + SIZE; row++) {
+      for (let col = x - SIZE; col <= x + SIZE; col++) {
+        const tile = this.getTile(col, row);
+        if (tile && !tile.getEntity()) {
+          tile.setEntity(new Food(this));
+        }
+      }
+    }
+  }
+
+  public log(s: string) {
+    this.game.console.content += s + '\n';
+  }
+
+  private getChunkFromTile(x: number, y: number) {
     const row = Math.floor(y / CHUNK_SIZE);
     const col = Math.floor(x / CHUNK_SIZE);
     const chunk = this.chunks[row] && this.chunks[row][col];
-    const xOffset = mod(x, CHUNK_SIZE);
-    const yOffset = mod(y, CHUNK_SIZE);
-    return chunk && chunk.getTile(xOffset, yOffset);
+    return chunk;
   }
 
   private addChunk(row: number, col: number) {
     if (!this.chunks[row]) {
       this.chunks[row] = [];
     }
-    this.chunks[row][col] = new Chunk(row, col, this.generator);
+    this.chunks[row][col] = new Chunk(row, col, this.generator, this);
   }
 
   private getCameraBounds(width: number, height: number) {

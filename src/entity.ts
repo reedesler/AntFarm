@@ -13,6 +13,10 @@ export default abstract class Entity {
     return {};
   }
 
+  public destroy() {
+    this.tile.setEntity(null);
+  }
+
   protected move(x: number, y: number) {
     if (Math.abs(x) > 1 || Math.abs(y) > 1) return;
     const destTile = this.world.getTile(this.tile.x + x, this.tile.y + y);
