@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["ES2017"],
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "outDir": "build"
+  },
+  "include": ["src/**/*"]
+}
